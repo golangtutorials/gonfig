@@ -62,21 +62,21 @@ func (jgonfig *JsonGonfig) GetString(key string, defaultValue interface{}) (stri
 }
 
 
-func (jgonfig *JsonGonfig) GetArray(key string, target []interface{}) ([]interface{}, error) {
+func (jgonfig *JsonGonfig) GetArray(key string, target []interface{}) (error) {
 
 
 	configValue, err := jgonfig.Get(key, "")
 	if err != nil {
-		return target, err
+		return err
 	}
 	if stringValue, ok := configValue.(string); ok {
 
 		keysBody := []byte(stringValue)
 		json.Unmarshal(keysBody, &target)
 
-		return target, nil
+		return nil
 	} else {
-		return target, &UnexpectedValueTypeError{key: key, value: configValue, message: "value is not a string"}
+		return &UnexpectedValueTypeError{key: key, value: configValue, message: "value is not a string"}
 	}
 }
 

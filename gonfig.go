@@ -15,7 +15,7 @@ type Gonfig interface {
 	GetFloat(key string, defaultValue interface{}) (float64, error)
 	GetBool(key string, defaultValue interface{}) (bool, error)
 	GetAs(key string, target interface{}) error
-	GetArray(key string, target []interface{}) ([]interface{}, error)
+	GetArray(key string, target []interface{}) error
 }
 
 type KeyNotFoundError struct {
