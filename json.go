@@ -7,7 +7,6 @@ import (
 	"path"
 	"strings"
 	"os"
-	"reflect"
 )
 
 // Gonfig implementation

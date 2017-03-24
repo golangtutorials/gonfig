@@ -6,7 +6,6 @@ package gonfig
 import (
 	"fmt"
 	"reflect"
-	"go/types"
 )
 
 type Gonfig interface {
