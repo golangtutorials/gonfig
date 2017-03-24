@@ -62,12 +62,12 @@ func (jgonfig *JsonGonfig) GetString(key string, defaultValue interface{}) (stri
 }
 
 
-func (jgonfig *JsonGonfig) GetArray(key string, target []struct{}) ([]struct{}, error) {
+func (jgonfig *JsonGonfig) GetArray(key string, target []interface{}) ([]interface{}, error) {
 
 
 	configValue, err := jgonfig.Get(key, "")
 	if err != nil {
-		return []struct{}{}, err
+		return target, err
 	}
 	if stringValue, ok := configValue.(string); ok {
 
@@ -76,7 +76,7 @@ func (jgonfig *JsonGonfig) GetArray(key string, target []struct{}) ([]struct{}, 
 
 		return target, nil
 	} else {
-		return []struct{}{}, &UnexpectedValueTypeError{key: key, value: configValue, message: "value is not a string"}
+		return target, &UnexpectedValueTypeError{key: key, value: configValue, message: "value is not a string"}
 	}
 }
 
