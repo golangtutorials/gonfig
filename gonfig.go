@@ -6,6 +6,7 @@ package gonfig
 import (
 	"fmt"
 	"reflect"
+	"go/types"
 )
 
 type Gonfig interface {
@@ -15,6 +16,7 @@ type Gonfig interface {
 	GetFloat(key string, defaultValue interface{}) (float64, error)
 	GetBool(key string, defaultValue interface{}) (bool, error)
 	GetAs(key string, target interface{}) error
+	GetArray(key string, target []struct{}) ([]struct{}, error)
 }
 
 type KeyNotFoundError struct {

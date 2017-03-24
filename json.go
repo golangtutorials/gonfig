@@ -6,12 +6,30 @@ import (
 	"io/ioutil"
 	"path"
 	"strings"
+	"os"
+	"reflect"
 )
 
 // Gonfig implementation
 // Implements the Gonfig interface
 type JsonGonfig struct {
 	obj map[string]interface{}
+}
+
+// FromJsonFile opens the file supplied and calls
+// FromJson function
+func FromJsonFile(filename string) (Gonfig, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	config, err := FromJson(f)
+	if err != nil {
+		return nil, err
+	}
+
+	return config, nil
 }
 
 // FromJson reads the contents from the supplied reader.
@@ -43,6 +61,26 @@ func (jgonfig *JsonGonfig) GetString(key string, defaultValue interface{}) (stri
 		return "", &UnexpectedValueTypeError{key: key, value: configValue, message: "value is not a string"}
 	}
 }
+
+
+func (jgonfig *JsonGonfig) GetArray(key string, target []struct{}) ([]struct{}, error) {
+
+
+	configValue, err := jgonfig.Get(key, "")
+	if err != nil {
+		return []struct{}{}, err
+	}
+	if stringValue, ok := configValue.(string); ok {
+
+		keysBody := []byte(stringValue)
+		json.Unmarshal(keysBody, &target)
+
+		return target, nil
+	} else {
+		return []struct{}{}, &UnexpectedValueTypeError{key: key, value: configValue, message: "value is not a string"}
+	}
+}
+
 
 // GetInt uses Get to fetch the value behind the supplied key.
 // It returns a int with either the retreived value or the default value and any error encountered.
